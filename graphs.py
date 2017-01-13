@@ -65,20 +65,24 @@ def genSignals(g, N = 100, p=0.05):
 
         temp_g = np.copy(g[origin,])
         temp_g[origin] = 0
-        dep_indx = np.nonzero((temp_g)==edge)[0][0]
+        dep_indx = np.nonzero(temp_g==edge)[0][0]
         arr_indx = g[dep_indx, origin]
+        sw = g[dep_indx, dep_indx]
 
         true_obs[0, i+1] = dep_indx
-        true_obs[2, i+1] = g[dep_indx, dep_indx]
+        true_obs[2, i+1] = sw
+        observed[0, i] = arr_indx
         if arr_indx==1:
-            true_obs[1, i+1] = g[dep_indx, dep_indx]
+            true_obs[1, i+1] = sw
+            observed[1, i] = np.random.choice([sw, 2 if sw==3 else 3], 1, False, [p, 1-p])
         else:
             true_obs[1, i+1] = 1
-    return true_obs
+            observed[1, i] = 1
+    return true_obs, observed
 
 #some code to test it
-G3 = genEvenGraph(8,0)
+G3 = genEvenGraph(12, 0)
 G3 = setSwitches(G3)
 #print(G3)
-A = genSignals(G3)
-print(A)
+[A, B] = genSignals(G3)
+print(B)
