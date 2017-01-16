@@ -54,10 +54,9 @@ def genSignals(g, N = 100, p=0.05):
     x_0 = np.random.randint(n)
     true_obs = np.zeros((3, N))
     observed = np.zeros((2, N))
-
-    true_obs[0,0] = x_0
-    true_obs[1,0] = np.random.randint(1, 4)
-    true_obs[2,0] = g[x_0, x_0]
+    true_obs[0,0] = x_0  #vertex
+    true_obs[1,0] = np.random.randint(1, 4) #edge
+    true_obs[2,0] = g[x_0, x_0] #switch
 
     for i in range(0,N-1):
         origin = true_obs[0, i]
@@ -65,9 +64,9 @@ def genSignals(g, N = 100, p=0.05):
 
         temp_g = np.copy(g[origin,])
         temp_g[origin] = 0
-        dep_indx = np.nonzero(temp_g==edge)[0][0]
-        arr_indx = g[dep_indx, origin]
-        sw = g[dep_indx, dep_indx]
+        dep_indx = np.nonzero(temp_g==edge)[0][0] #departure label of edge
+        arr_indx = g[dep_indx, origin] ##arrival label of edge
+        sw = g[dep_indx, dep_indx] 
 
         true_obs[0, i+1] = dep_indx
         true_obs[2, i+1] = sw
