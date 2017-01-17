@@ -60,7 +60,7 @@ class Graph:
         true_obs[1,0] = np.random.randint(1, 4) #edge
         true_obs[2,0] = g[x_0, x_0] #switch
 
-        for i in range(0,N-1):
+        for i in range(0,N): #remake this to make it more clear
             origin = true_obs[0, i]
             edge = true_obs[1, i]
 
@@ -70,23 +70,18 @@ class Graph:
             arr_indx = g[dep_indx, origin] ##arrival label of edge
             sw = g[dep_indx, dep_indx] 
 
-            true_obs[0, i+1] = dep_indx
-            true_obs[2, i+1] = sw
+            if i<N-1: # allow for a last loop just adding to the observed
+                true_obs[0, i+1] = dep_indx
+                true_obs[2, i+1] = sw
+
             observed[0, i] = arr_indx
             if arr_indx==1:
-                true_obs[1, i+1] = sw
+                if i < N-1:
+                    true_obs[1, i+1] = sw
                 observed[1, i] = np.random.choice([sw, 2 if sw==3 else 3], 1, False, [p, 1-p])
             else:
-                true_obs[1, i+1] = 1
+                if i < N-1:
+                    true_obs[1, i+1] = 1
                 observed[1, i] = 1
+
         return true_obs, observed
-
-
-#some code to test it
-graph = Graph()
-G3 = graph.genEvenGraph(12, 0)
-G3 = graph.setSwitches(G3)
-#print(G3)
-[A, B] = graph.genSignals(G3)
-print(B)
-
