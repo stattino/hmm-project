@@ -35,17 +35,18 @@ class Graph:
             np.random.shuffle(g)
         return g
 
-    def setSwitches(self, g):
+    def setSwitches(self, g): # return sigmas N
         # Set switches for vertices at random. (L=2 and R=3)
-        for i in range(0, g.shape[0]):
-            g[i, i] = np.random.randint(2, 4)
-        return g
+        N = g.shape[0]
+        sigmas = np.random.randint(2, 4, size=N)
+        return sigmas
 
-    def genSignals(self, g, T=100, p=0.05):
+    def genSignals(self, g, sigmas, T=100, p=0.05):
         """Generates N observations from a train traversing the graph g.
             Rules?
         Input:
           g - graph structure
+          sigmas - switch
           T - number of observations desired
           p - noise level in observation
         Returns:
@@ -72,7 +73,7 @@ class Graph:
         if true_path[2, 0] == 1: # noise only if L/R
             observed[1, 0] = 1
         else:
-            observed[1, 0] = np.random.choice([g[x_0, x_0], 2 if g[x_0, x_0] == 3 else 3], 1, False, [1 - p, p])
+            observed[1, 0] = np.random.choice([sigmas[x_0], 2 if sigmas[x_0] == 3 else 3], 1, False, [1 - p, p])
 
         for i in range(1, T):
             x_prev = true_path[0, i - 1]
@@ -82,7 +83,7 @@ class Graph:
             temp_g[x_prev] = 0
             vertex_idx = np.nonzero(temp_g == e_prev)[0][0]  # index of next vertex
             arr_label = g[vertex_idx, x_prev]  # arrival label of edge
-            sw = g[vertex_idx, vertex_idx]
+            sw = sigmas[vertex_idx]
 
             true_path[0, i ] = vertex_idx
             true_path[1, i ] = arr_label
