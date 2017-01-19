@@ -1,6 +1,6 @@
 from Graph import *
 from hmm import *
-
+import pandas as pd
 #some code to test it
 graph = Graph()
 G3 = graph.genEvenGraph(8, 0)
