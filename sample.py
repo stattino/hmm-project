@@ -1,10 +1,11 @@
 from Graph import *
 from hmm import *
 import pandas as pd
+
 #some code to test it
 graph = Graph()
 G3 = graph.genEvenGraph(8, 0)
-sigmas = graph.setSwitches(G3)
+sigmas = genSigma(G3)
 print(G3)
 print(sigmas)
 p = 0.05
@@ -13,11 +14,11 @@ print(G3)
 print(B)
 print(A)
 
-hmm = HMM()
-C = hmm.genC(G3, B[1,], p)
+hmm = HMM(B[1,], G3)
+C = hmm.genC(sigmas, G3, B[1,], p)
 print(C)
 
-[d, a] = hmm.genD(G3, B[1,], p)
+[d, a] = hmm.genD(sigmas, G3, B[1,], p)
 
 print(a)
 print(d)

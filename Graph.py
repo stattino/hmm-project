@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Graph:
     def genEvenGraph(self, n, shuffle=0):  # (shuffle not yet completed.. leads to self loops)
         """
@@ -35,8 +34,9 @@ class Graph:
             np.random.shuffle(g)
         return g
 
-    def setSwitches(self, g): # return sigmas N
-        # Set switches for vertices at random. (L=2 and R=3)
+    def setSwitches(self, g):
+         # Set switches for vertices at random. (L=2 and R=3)
+         # These are the true switches.
         N = g.shape[0]
         sigmas = np.random.randint(2, 4, size=N)
         return sigmas
