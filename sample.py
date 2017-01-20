@@ -9,7 +9,7 @@ sigmas = genSigma(G3)
 print(G3)
 print(sigmas)
 p = 0.05
-[A, B] = graph.genSignals(G3, sigmas, 2, p)
+[A, B] = graph.genSignals(G3, sigmas, 8, p)
 print(G3)
 print(B)
 print(A)
@@ -29,5 +29,8 @@ print(d)
 
 [sigmas, sigma_prob]= sampleSigma(8, hmm, 0, 5000)
 
-p_vec = computeTarget(hmm, sigmas)
+# p_vec = computeTarget(hmm, sigmas)
+# print(p_vec)
+p_vec = convergenceCheck(hmm, sigmas)
 print(p_vec)
+np.savetxt("trial.txt", p_vec)
