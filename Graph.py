@@ -1,6 +1,7 @@
 import numpy as np
 
 class Graph:
+
     def genEvenGraph(self, n, shuffle=0):  # (shuffle not yet completed.. leads to self loops)
         """
         Generates an even graph with degree 3 for every vertex.

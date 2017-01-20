@@ -9,19 +9,25 @@ sigmas = genSigma(G3)
 print(G3)
 print(sigmas)
 p = 0.05
-[A, B] = graph.genSignals(G3, sigmas, 6, p)
+[A, B] = graph.genSignals(G3, sigmas, 2, p)
 print(G3)
 print(B)
 print(A)
 
-hmm = HMM(B[1,], G3)
-C = hmm.genC(sigmas, G3, B[1,], p)
+hmm = HMM(B[1,], G3, p)
+C = hmm.genC(sigmas)
 print(C)
 
-[d, a] = hmm.genD(sigmas, G3, B[1,], p)
+[d, a] = hmm.genD(sigmas)
 
 print(a)
 print(d)
 #print(sum(C[:,0]))
 #print(sum(C[:,5]))
 #print(sum(C[0,:]))
+
+
+[sigmas, sigma_prob]= sampleSigma(8, hmm, 0, 5000)
+
+p_vec = computeTarget(hmm, sigmas)
+print(p_vec)
