@@ -14,7 +14,7 @@ class HMM():
         """
         T = self.Obs.shape[0]
         N = self.G.shape[0]
-        C = np.zeros([3 * N, T], float)
+        C = np.zeros((3 * N, T))
         C[:,0] = 1 / (3*N)
         for j in range(1, T): # columns
             for i in range(0, N): # rows
@@ -128,7 +128,7 @@ class HMM():
         return d, d_index
 
  # Changes one random switch i, sigma[i], to a new setting.
-def newSigma(sigma, proposal=0):
+def newSigma(sigma, proposal):
     N = sigma.shape[0]
     if proposal==0:
         change = np.random.randint(0, N)
@@ -147,12 +147,13 @@ def genSigma(g):
 # MCMC - Metropolis hastings sampling of sigmas
 # Decorrelate samples by skipping skip_rate samples between each sample with skip_rate
 # add later.
-def sampleSigma(N, hmm, burn_in=100, no_samples=2000, skip_rate=1):
+def sampleSigma(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0):
+    N = hmm.G.shape[0]
     sigmas = np.zeros((N, no_samples))
     sigma_probabilities = np.zeros(no_samples)
     sigma = genSigma(hmm.G)     # Random starting sigma
     for i in range(0, burn_in + no_samples):
-        proposed_sigma = newSigma(sigma)
+        proposed_sigma = newSigma(sigma, proposal)
         prob_sigma = computeProbability(hmm, sigma)
         prob_proposed_sigma = computeProbability(hmm, proposed_sigma)
 
@@ -171,7 +172,6 @@ def sampleSigma(N, hmm, burn_in=100, no_samples=2000, skip_rate=1):
  # p(O| sigma, G)
 def computeProbability(hmm, sigma):
     C = hmm.genC(sigma)
-    N, T = C.shape
     prob = sum(C[:, -1])
     return prob
 
@@ -182,21 +182,34 @@ def computeTarget(hmm, sigmas):
     takes HMM, and its observations and graph structure, and a vector of sigmas
     returns p_vec = p(s| O, G)
     """
-    prob_joint = np.zeros(3*np.sqrt(hmm.G.size))
+    N = hmm.G.shape[0]
+    prob_joint = np.zeros(3*N)
     for row in sigmas:
         c = hmm.genC(row)
         prob_joint += (c[:, -1])  # p(s, O| sigma, G)
     prob_joint = np.divide(prob_joint, sum(prob_joint))     # Normalization
     return prob_joint
 
- # Check convergence
+ # Check convergence for different amount of samples
 def convergenceCheck(hmm, sigmas, step_size=100):
     N, T = sigmas.shape
-    prob_joint = np.zeros( 3*np.sqrt(hmm.G.size))
-    prob_joint_steps = np.zeros((T/step_size, 3*np.sqrt(hmm.G.size)))
+    prob_joint = np.zeros(3*N)
+    prob_joint_steps = np.zeros((T/step_size, 3*N))
     for i in range(0,T):
-        c = hmm.genC(sigmas[:,i])
+        c = hmm.genC(sigmas[:, i])
         prob_joint += (c[:, -1])  # p(s, O| sigma, G)
         if (i + 1)%step_size == 0:
             prob_joint_steps[(i + 1)/step_size - 1, :] = np.divide(prob_joint, sum(prob_joint))
     return prob_joint_steps
+
+# Returns p(s| O) for all states, for one to T observations, O_1:i, where i = 1, ..., T
+def probabilitySteps(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0):
+    T = hmm.Obs.shape[0]
+    N = hmm.G.shape[0]
+    probability_matrix = np.zeros((3*N, T))
+    # Computes p(s| O) for all T observations, then for T-1, etc...
+    for i in range(0, T):
+        if i>0: hmm.Obs = hmm.Obs[0:-1]
+        sigmas, _ = sampleSigma(hmm, no_samples, burn_in, skip_rate, proposal)
+        probability_matrix[:, i] = computeTarget(hmm, sigmas)
+    return probability_matrix
