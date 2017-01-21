@@ -182,6 +182,7 @@ def sampleSigma(N, hmm, burn_in = 100, no_samples = 2000, skip_rate = 1):
         #if (i%skip_rate)==0: # maybe remove skip_rate for clarity. add at end?
         sigmas[:,i] = sigma
         sigma_probabilities[i] = prob_sigma
+        print(sigma_probabilities)
 
     return sigmas, sigma_probabilities
 
