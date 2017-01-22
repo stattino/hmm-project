@@ -31,3 +31,9 @@ class Plot:
         df = pd.DataFrame(p_matrix[0:10, :])
         df.plot(grid=True, linewidth = 0.4, logy=True)
         plt.savefig('./plots/samples/nodes_{}-observation_{}-no_sample_{}.png'.format(self.N, self.observation, self.no_sample))
+
+    def scatterObservation(self, p_matrix):
+        plt.clf()
+        for i in range(1, self.observation):
+            plt.scatter(x=[i]*self.N*3, y=np.linspace(1, self.N*3, self.N*3), s=p_matrix[:, i-1]*250, color="blue")
+        plt.savefig('./plots/scatter/nodes_{}-observation_{}-no_sample_{}.png'.format(self.N, self.observation, self.no_sample))

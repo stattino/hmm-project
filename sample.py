@@ -46,4 +46,4 @@ plot = Plot(N, no_sample, observation)
 plot.barGraph(p_vec)
 plot.lineGraphObservation(p_matrix)
 plot.lineGraphSample(p_vec2)
-
+plot.scatterObservation(p_matrix)
