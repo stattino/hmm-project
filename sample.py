@@ -1,15 +1,20 @@
 from Graph import *
 from hmm import *
 import pandas as pd
+from Plot import *
 
+# initial definition
+N = 8
+p = 0.05
+observation = 8
+no_sample = 2000
 #some code to test it
 graph = Graph()
-G3 = graph.genEvenGraph(8, 0)
+G3 = graph.genEvenGraph(N, 0)
 sigmas = genSigma(G3)
 print(G3)
 print(sigmas)
-p = 0.05
-[A, B] = graph.genSignals(G3, sigmas, 8, p)
+[A, B] = graph.genSignals(G3, sigmas, observation, p)
 print(G3)
 print(B)
 print(A)
@@ -27,12 +32,18 @@ C = hmm.genC(sigmas)
 #print(sum(C[0,:]))
 
 
-# [sigmas, sigma_prob]= sampleSigma(hmm, 2000, 0)
-# p_vec = computeTarget(hmm, sigmas)
+[sigmas, sigma_prob]= sampleSigma(hmm, 2000, 0)
+p_vec = computeTarget(hmm, sigmas)
 # print(p_vec)
 
-p_matrix = probabilitySteps(hmm, 2000, 0)
+p_matrix = probabilitySteps(hmm, no_sample, 0)
 
-# p_vec = convergenceCheck(hmm, sigmas)
+p_vec2 = convergenceCheck(hmm, sigmas)
 print(p_matrix)
 np.savetxt("trial.txt", p_matrix)
+
+plot = Plot(N, no_sample, observation)
+plot.barGraph(p_vec)
+plot.lineGraphObservation(p_matrix)
+plot.lineGraphSample(p_vec2)
+
