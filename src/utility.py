@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as it
 
  # Changes one random switch i, sigma[i], to a new setting.
 def newSigma(sigma, proposal):
@@ -102,3 +103,18 @@ def saveData(p_matrix, graph_size, no_observations, no_sample, data_type):
 
 def loadData(graph_size, no_observations, no_sample, data_type):
     return np.loadtxt('../data/data_states={}_observations={}_samples={}_data={}.txt'.format(3*graph_size, no_observations, no_sample, data_type))
+
+def deterministicTarget(hmm):
+    #T = hmm.Obs.shape[0]
+    N = hmm.G.shape[0]
+    A = it.product([2, 3], repeat=N) # iterator creating all permutations of 2 and 3 of length N
+    prob_joint = np.zeros(3*N)
+    for i in A:
+        prob_joint += computeTargetSingle(hmm, i)
+    prob_joint = np.divide(prob_joint, sum(prob_joint))
+    return prob_joint
+
+def computeTargetSingle(hmm, sigma):
+    c = hmm.genC(sigma)
+    prob_joint = c[:, -1]  # p(s, O| sigma, G)
+    return prob_joint
