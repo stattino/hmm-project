@@ -97,3 +97,11 @@ class Graph:
                 observed[1, i] = 1
 
         return true_path, observed
+
+    def truePathToStates(self, true_path):
+        N = true_path.shape[0]
+        state_path = np.zeros(N)
+        for i in range(0, N):
+            label = true_path[2, i] - 1
+            state_path[i] = 3*true_path[0, i] + label
+        return state_path
