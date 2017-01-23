@@ -32,8 +32,9 @@ class Plot:
         df.plot(grid=True, linewidth = 0.4, logy=True)
         plt.savefig('./plots/samples/nodes_{}-observation_{}-no_sample_{}.png'.format(self.N, self.observation, self.no_sample))
 
-    def scatterObservation(self, p_matrix):
+    def scatterObservation(self, p_matrix, true_states):
         plt.clf()
         for i in range(1, self.observation):
             plt.scatter(x=[i]*self.N*3, y=np.linspace(1, self.N*3, self.N*3), s=p_matrix[:, i-1]*250, color="blue")
+            plt.scatter(x=i, y=true_states[i-1], s=100, facecolor="none", edgecolors="r")
         plt.savefig('./plots/scatter/nodes_{}-observation_{}-no_sample_{}.png'.format(self.N, self.observation, self.no_sample))
