@@ -163,9 +163,9 @@ def sampleSigma(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0):
             sigma = proposed_sigma
             prob_sigma = prob_proposed_sigma
 
-        if i >= burn_in and i%skip_rate==0:
-            sigmas[:, i] = sigma
-            sigma_probabilities[i] = prob_sigma
+        if i > burn_in and i%skip_rate==0:
+            sigmas[:, i-skip_rate*burn_in] = sigma
+            sigma_probabilities[i-skip_rate*burn_in] = prob_sigma
 
     return sigmas, sigma_probabilities
 

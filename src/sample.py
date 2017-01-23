@@ -4,9 +4,9 @@ import pandas as pd
 from Plot import *
 
 # initial definition
-N = 20
-p = 0.2
-observation = 18
+N = 12
+p = 0.05
+observation = 6
 no_sample = 2000
 #some code to test it
 graph = Graph()
@@ -40,7 +40,7 @@ C = hmm.genC(sigmas)
 p_vec = computeTarget(hmm, sigmas)
 # print(p_vec)
 
-p_matrix = probabilitySteps(hmm, no_sample, 0)
+p_matrix = probabilitySteps(hmm, no_sample, 100)
 
 p_vec2 = convergenceCheck(hmm, sigmas)
 print(p_matrix)
