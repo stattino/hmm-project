@@ -19,6 +19,9 @@ print(G3)
 print(B)
 print(A)
 
+true_states = graph.truePathToStates(A)
+print(true_states)
+
 hmm = HMM(B[1,], G3, p)
 C = hmm.genC(sigmas)
 # print(C)
