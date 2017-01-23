@@ -66,7 +66,7 @@ class Graph:
         observed = np.zeros((2, T))
 
         true_path[0, 0] = x_0
-        true_path[1, 0] = 0  # not observed
+        true_path[1, 0] = 0  # not defined
         true_path[2, 0] = np.random.randint(1, 3)
         # true_path[1, 0] = np.random.choice([1, true_path[2,0]], 1, False, [1/3, 2/3])
 
@@ -97,6 +97,15 @@ class Graph:
                 observed[1, i] = 1
 
         return true_path, observed
+
+    def genAltObservations(self, true_path):
+        T = true_path.shape[0]
+        observed = np.zeros(T)
+        for i in range(0, T):
+            truth = true_path[2, i]
+            # truth is in {1, 2, 3}
+            observed[i] = np.random.choice([truth, (truth+1)%3 +1, (truth+2)%3 +1], 1, False, [1 - p, p/2, p/2])
+        return observed
 
     def truePathToStates(self, true_path):
         T = true_path.shape[1]
