@@ -209,9 +209,9 @@ def probabilitySteps(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0)
     probability_matrix = np.zeros((3*N, T))
     obs_copy = np.copy(hmm.Obs)
     # Computes p(s| O) for all T observations, then for T-1, etc...
-    for i in range(T-1, -1, -1):
-        if i<T-1: hmm.Obs = hmm.Obs[0:i]
+    for i in range(0, T):
+        if i>0: hmm.Obs = hmm.Obs[0:-1]
         sigmas, _ = sampleSigma(hmm, no_samples, burn_in, skip_rate, proposal)
-        probability_matrix[:, i] = computeTarget(hmm, sigmas)
+        probability_matrix[:, (T - 1 - i)] = computeTarget(hmm, sigmas)
     hmm.Obs = obs_copy
     return probability_matrix
