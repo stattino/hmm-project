@@ -114,3 +114,13 @@ class Graph:
             label = true_path[2, i] - 1
             state_path[i] = 3*true_path[0, i] + label
         return state_path
+
+    def genAltObservations(self, true_path, p):
+        T = true_path.shape[1]
+        observed = np.zeros(T)
+        for i in range(0, T):
+            truth = true_path[2, i]
+            # truth is in {1, 2, 3}
+            observed[i] = np.random.choice([truth, (truth+1)%3 +1, (truth+2)%3 +1], 1, False, [1 - p, p/2, p/2])
+        return observed
+

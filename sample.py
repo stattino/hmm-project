@@ -20,9 +20,11 @@ print(B)
 print(A)
 
 true_states = graph.truePathToStates(A)
+observed = graph.genAltObservations(A, p)
 print(true_states)
+print(observed)
 
-hmm = HMM(B[1,], G3, p)
+hmm = HMM(observed, G3, p)
 C = hmm.genC(sigmas)
 # print(C)
 
