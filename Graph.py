@@ -96,7 +96,7 @@ class Graph:
                 true_path[2, i] = 1
                 observed[1, i] = 1
 
-        return true_path, observed
+        return true_path
 
     def genAltObservations(self, true_path):
         T = true_path.shape[0]
