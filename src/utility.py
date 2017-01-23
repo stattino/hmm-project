@@ -89,4 +89,7 @@ def probabilitySteps(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0)
     return probability_matrix
 
 def saveData(p_matrix, graph_size, no_observations, no_sample, data_type):
-    np.savetxt('../data/data_states={}_observations={}_samples={}_data={}'.format(3*graph_size, no_observations, no_sample, data_type), p_matrix)
+    np.savetxt('../data/data_states={}_observations={}_samples={}_data={}.txt'.format(3*graph_size, no_observations, no_sample, data_type), p_matrix)
+
+def loadData(graph_size, no_observations, no_sample, data_type):
+    return np.loadtxt('../data/data_states={}_observations={}_samples={}_data={}.txt'.format(3*graph_size, no_observations, no_sample, data_type))
