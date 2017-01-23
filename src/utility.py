@@ -88,6 +88,15 @@ def probabilitySteps(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0)
     hmm.Obs = obs_copy
     return probability_matrix
 
+def saveGraph(graph, graph_size, true_sigma):
+    np.savetxt('../data/graph_size={}'.format(graph_size), graph)
+    np.savetxt('../data/true_sigma_size={}'.format(graph_size), true_sigma)
+
+def loadGraph(graph_size):
+    graph = np.loadtxt('../data/graph_size={}'.format(graph_size))
+    sigma = np.loadtxt('../data/true_sigma_size={}'.format(graph_size))
+    return graph, sigma
+
 def saveData(p_matrix, graph_size, no_observations, no_sample, data_type):
     np.savetxt('../data/data_states={}_observations={}_samples={}_data={}.txt'.format(3*graph_size, no_observations, no_sample, data_type), p_matrix)
 
