@@ -4,9 +4,9 @@ import pandas as pd
 from Plot import *
 
 # initial definition
-N = 8
-p = 0.05
-observation = 8
+N = 20
+p = 0.2
+observation = 18
 no_sample = 2000
 #some code to test it
 graph = Graph()
@@ -14,7 +14,7 @@ G3 = graph.genEvenGraph(N, 0)
 sigmas = genSigma(G3)
 print(G3)
 print(sigmas)
-A = graph.genSignals(G3, sigmas, observation, p)
+A = graph.genSignals(G3, sigmas, observation)
 print(G3)
 print(A)
 
@@ -36,7 +36,7 @@ C = hmm.genC(sigmas)
 #print(sum(C[0,:]))
 
 
-[sigmas, sigma_prob]= sampleSigma(hmm, 2000, 0)
+[sigmas, sigma_prob]= sampleSigma(hmm, 2000, 100)
 p_vec = computeTarget(hmm, sigmas)
 # print(p_vec)
 
@@ -46,8 +46,9 @@ p_vec2 = convergenceCheck(hmm, sigmas)
 print(p_matrix)
 np.savetxt("trial.txt", p_matrix)
 
-plot = Plot(N, no_sample, observation)
+plot = Plot(N, no_sample, observation, p)
 plot.barGraph(p_vec)
 plot.lineGraphObservation(p_matrix)
 plot.lineGraphSample(p_vec2)
 plot.scatterObservation(p_matrix, true_states)
+
