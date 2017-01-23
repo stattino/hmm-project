@@ -44,37 +44,26 @@ class Graph:
         sigmas = np.random.randint(2, 4, size=N)
         return sigmas
 
-    def genSignals(self, g, sigmas, T=100, p=0.05):
+    def genSignals(self, g, sigmas, T=100):
         """Generates N observations from a train traversing the graph g.
         Input:
           g - graph structure
           sigmas - switch
           T - number of observations desired
-          p - noise level in observation
         Returns:
           true_path -   true trajectory made by the train.
                         1st row: index of vertices
                         2nd row: arrival labels
                         3rd row: departure labels
-          observed - trajectory observed with noise from switches
-                        1st row: arrival labels
-                        2nd row: departure labels
       """
         N = g.shape[0]
         x_0 = np.random.randint(N)
         true_path = np.zeros((3, T))
-        observed = np.zeros((2, T))
 
         true_path[0, 0] = x_0
         true_path[1, 0] = 0  # not defined
         true_path[2, 0] = np.random.randint(1, 3)
         # true_path[1, 0] = np.random.choice([1, true_path[2,0]], 1, False, [1/3, 2/3])
-
-        observed[0, 0] = 0 # By definition, doesnt observe this.
-        if true_path[2, 0] == 1: # noise only if L/R
-            observed[1, 0] = 1
-        else:
-            observed[1, 0] = np.random.choice([sigmas[x_0], 2 if sigmas[x_0] == 3 else 3], 1, False, [1 - p, p])
 
          # Deterministically traverse the graph to create the true path,  following the
          # current switches, and adds noise to the observations.
@@ -88,24 +77,12 @@ class Graph:
 
             true_path[0, i ] = vertex_idx
             true_path[1, i ] = arr_label
-            observed[0, i] = arr_label
             if arr_label == 1:
                 true_path[2, i] = sw
-                observed[1, i] = np.random.choice([sw, 2 if sw == 3 else 3], 1, False, [1 - p, p])
             else:
                 true_path[2, i] = 1
-                observed[1, i] = 1
 
         return true_path
-
-    def genAltObservations(self, true_path):
-        T = true_path.shape[0]
-        observed = np.zeros(T)
-        for i in range(0, T):
-            truth = true_path[2, i]
-            # truth is in {1, 2, 3}
-            observed[i] = np.random.choice([truth, (truth+1)%3 +1, (truth+2)%3 +1], 1, False, [1 - p, p/2, p/2])
-        return observed
 
     def truePathToStates(self, true_path):
         T = true_path.shape[1]
