@@ -146,13 +146,13 @@ def genSigma(g):
 
 # MCMC - Metropolis hastings sampling of sigmas
 # Decorrelate samples by skipping skip_rate samples between each sample with skip_rate
-# add later.
+# add later. Maybe have a proposal that changes >1 switch instead.
 def sampleSigma(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0):
     N = hmm.G.shape[0]
     sigmas = np.zeros((N, no_samples))
     sigma_probabilities = np.zeros(no_samples)
     sigma = genSigma(hmm.G)     # Random starting sigma
-    for i in range(0, burn_in + no_samples):
+    for i in range(0, skip_rate*(burn_in + no_samples)):
         proposed_sigma = newSigma(sigma, proposal)
         prob_sigma = computeProbability(hmm, sigma)
         prob_proposed_sigma = computeProbability(hmm, proposed_sigma)
@@ -163,9 +163,9 @@ def sampleSigma(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0):
             sigma = proposed_sigma
             prob_sigma = prob_proposed_sigma
 
-        #if (i%skip_rate)==0: # maybe remove skip_rate for clarity. add at end?
-        sigmas[:, i] = sigma
-        sigma_probabilities[i] = prob_sigma
+        if i >= burn_in and i%skip_rate==0:
+            sigmas[:, i] = sigma
+            sigma_probabilities[i] = prob_sigma
 
     return sigmas, sigma_probabilities
 
