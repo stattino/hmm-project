@@ -191,7 +191,7 @@ def computeTarget(hmm, sigmas):
     return prob_joint
 
  # Check convergence for different amount of samples
-def convergenceCheck(hmm, sigmas, step_size=100):
+def convergenceCheck(hmm, sigmas, step_size=10):
     N, T = sigmas.shape
     prob_joint = np.zeros(3*N)
     prob_joint_steps = np.zeros((T/step_size, 3*N))

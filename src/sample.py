@@ -7,7 +7,7 @@ from Plot import *
 N = 12
 p = 0.05
 observation = 6
-no_sample = 2000
+no_sample = 4000
 #some code to test it
 graph = Graph()
 G3 = graph.genEvenGraph(N, 0)
@@ -36,7 +36,7 @@ C = hmm.genC(sigmas)
 #print(sum(C[0,:]))
 
 
-[sigmas, sigma_prob]= sampleSigma(hmm, 2000, 100)
+[sigmas, sigma_prob]= sampleSigma(hmm, no_sample, 100)
 p_vec = computeTarget(hmm, sigmas)
 # print(p_vec)
 

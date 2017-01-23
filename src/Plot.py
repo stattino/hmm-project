@@ -29,8 +29,8 @@ class Plot:
 
     def lineGraphSample(self, p_matrix):
         y = np.log(p_matrix)
-        df = pd.DataFrame(p_matrix[0:4, :])
-        df.plot(grid=True, linewidth = 0.4, logy=True)
+        df = pd.DataFrame(y)
+        df.plot(grid=True, linewidth = 0.4, legend=False)
         plt.savefig('./plots/samples/nodes_{}-observation_{}-no_sample_{}_p={}.png'.format(self.N, self.observation, self.no_sample, self.p))
 
     def scatterObservation(self, p_matrix, true_states):
