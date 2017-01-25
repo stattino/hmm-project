@@ -40,10 +40,12 @@ class Plot:
     def scatterObservation(self, p_matrix, true_states):
         plt.clf()
         for i in range(0, self.observation-1):
-            plt.scatter(x=[i]*(self.N*3 - 1), y=np.delete(np.linspace(0, self.N*3-1, self.N*3), true_states[i]), s=np.delete(p_matrix[:, i], true_states[i])*250,  color="blue")
+            plt.scatter(x=[i]*(self.N*3 - 1), y=np.delete(np.linspace(0, self.N*3-1, self.N*3), true_states[i]), s=np.delete(p_matrix[:, i], true_states[i])*250, color="blue")
             plt.scatter(x=i, y=true_states[i], s=p_matrix[true_states[i], i]*250,  color="red")
         plt.xlabel('Observations', fontsize=18)
         plt.ylabel('States', fontsize=18)
+        plt.xlim([-1, self.observation+1])
+        plt.ylim([-1, self.N*3+1])
         plt.savefig('../plots/scatter/nodes_{}-observation_{}-no_sample_{}_p={}.png'.format(self.N, self.observation, self.no_sample, self.p))
 
     def absError(self, p_matrix, p_true, proposal):
