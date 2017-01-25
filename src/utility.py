@@ -86,6 +86,7 @@ def probabilitySteps(hmm, no_samples=2000, burn_in=100, skip_rate=1, proposal=0)
         if i>0: hmm.Obs = hmm.Obs[0:-1]
         sigmas, _ = sampleSigma(hmm, no_samples, burn_in, skip_rate, proposal)
         probability_matrix[:, (T - 1 - i)] = computeTarget(hmm, sigmas)
+        print("Step", i, "of", T, "completed")
     hmm.Obs = obs_copy
     return probability_matrix
 

@@ -2,11 +2,11 @@ from Graph import *
 from hmm import *
 import pandas as pd
 from Plot import *
-
+from utility import *
 # initial definition
-N = 12
+N = 30
 p = 0.05
-observation = 6
+observation = 32
 no_sample = 4000
 #some code to test it
 graph = Graph()
@@ -47,7 +47,7 @@ print(p_matrix)
 np.savetxt("trial.txt", p_matrix)
 
 plot = Plot(N, no_sample, observation, p)
-plot.barGraph(p_vec)
+#plot.barGraph(p_vec)
 plot.lineGraphObservation(p_matrix)
 plot.lineGraphSample(p_vec2)
 plot.scatterObservation(p_matrix, true_states)

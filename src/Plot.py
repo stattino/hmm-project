@@ -42,6 +42,8 @@ class Plot:
         for i in range(0, self.observation-1):
             plt.scatter(x=[i]*self.N*3, y=np.linspace(0, self.N*3-1, self.N*3), s=p_matrix[:, i]*250, color="blue")
             plt.scatter(x=i, y=true_states[i], s=200, facecolor="none", edgecolors="r")
+        plt.xlabel("Observation", fontsize=15)
+        plt.ylabel("States", fontsize=15)
         plt.savefig('../plots/scatter/nodes_{}-observation_{}-no_sample_{}_p={}.png'.format(self.N, self.observation, self.no_sample, self.p))
 
     def absError(self, p_matrix, p_true, proposal):
